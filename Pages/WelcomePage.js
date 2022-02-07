@@ -2,19 +2,21 @@ import { Button, Image, StyleSheet, Text, View } from "react-native";
 
 import WelcomeIcon from '../assets/undraw_mathematics.svg';
 
-import Svg from 'react-native-svg';
+import PrimaryButton from "../Components/PrimaryButton";
+import MathFightText from "../Components/MathFightText";
+import GlobalStyles from "../Components/GlobalStyles";
 
-// <Button onPress={() => navigation.navigate('SetGamePage')} title="go to set game page" />
 function WelcomePage({ navigation }) {
     return (
-        <View style={styles.container}>
+        <View style={GlobalStyles.container}>
             <View style={styles.imgWrapper}>
                 <WelcomeIcon width={200} height={200} />
             </View>
             <View style={styles.buttonContainer}>
+                <MathFightText type='header' >Math Fight</MathFightText>
                 <View style={styles.buttonWrapper}>
-                    <Button onPress={() => navigation.navigate('SetGamePage')} title="go to set game page" />
-                    <Button onPress={() => navigation.navigate('SetGamePage')} title="go to set game page" />
+                    <PrimaryButton style={styles.button} onPress={() => navigation.navigate('SetGamePage')} title="Single Player" />
+                    <PrimaryButton onPress={() => navigation.navigate('SetGamePage')} title="Duel With Friend" />
                 </View>
             </View>
         </View>
@@ -22,27 +24,22 @@ function WelcomePage({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: '#201F3D'
-    },
     imgWrapper: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 20
     },
     buttonContainer: {
         padding: 20,
         flex: 1.25,
-        backgroundColor: 'pink',
         alignItems: 'center',
         justifyContent: 'flex-start'
     },
     buttonWrapper: {
         flex: 1,
         justifyContent: 'space-evenly'
-    }
+    },
 });
 
 
