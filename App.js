@@ -20,7 +20,7 @@ export default function App() {
         screenOptions={{
           headerShown: false
         }}
-        initialRouteName='SetGamePage'>
+        initialRouteName='Welcomepage'>
         <Stack.Screen
           name='Welcomepage' component={WelcomePage} />
         <Stack.Screen name='SetGamePage' component={SetGamePage} />

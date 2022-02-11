@@ -4,6 +4,8 @@ import backButtonIcon from "../assets/arrow-back-icon.png";
 import TeacherSvg from '../assets/undraw_teacher_re_sico.svg';
 import SquerBlock from "../Components/SquerBlock";
 import MathFightText from "../Components/MathFightText";
+import SecondaryText from "../Components/SecondaryText";
+import CountDown from "react-native-countdown-component";
 
 
 function SinglePlayerPage({ route, navigation }) {
@@ -17,13 +19,24 @@ function SinglePlayerPage({ route, navigation }) {
                     }} onPress={() => navigation.goBack()}>
                         <Image source={backButtonIcon} alt='' />
                     </TouchableHighlight>
+                    <CountDown
+                        until={10}
+                        onFinish={() => alert('finished')}
+                        onPress={() => alert('hello')}
+                        size={30}
+                        timeToShow={['M', 'S']}
+                        digitStyle={{ backgroundColor: '#FFF', borderWidth: 2, borderColor: '#F0D654' }}
+                        timeLabelStyle={{ color: '#F0D654', fontWeight: 'bold' }}
+                        separatorStyle={{ color: '#F0D654' }}
+                        timeToShow={['M', 'S']}
+                        digitTxtStyle={{ color: '#F0D654' }}
+                    />
                 </View>
-                <TeacherSvg style={styles.teacherSvg} width={200} height={200} />
             </View>
             <View style={styles.lowerViewContainer} >
-                <MathFightText type="header">
-                    Pick your operators?
-                </MathFightText>
+                <View style={styles.questionText}>
+                    <SecondaryText type='header'>4 + 5</SecondaryText>
+                </View>
                 <View style={styles.buttonContainer}>
                     <View style={styles.innnerButtonWrapper}>
                         <SquerBlock onPress={() => alert('blk')} title='4' />
@@ -70,6 +83,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%'
     },
+    questionText: {
+        width: '80%',
+        backgroundColor: '#535266',
+        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10
+    }
 });
 
 

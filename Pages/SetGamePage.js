@@ -1,19 +1,19 @@
 import { Image, StyleSheet, Text, TouchableHighlight, View } from "react-native";
 import GlobalStyles from "../Components/GlobalStyles";
-import MathFightText from "../Components/MathFightText";
 
 import backButtonIcon from "../assets/arrow-back-icon.png";
-import TeacherSvg from '../assets/undraw_teacher_re_sico.svg';
+import TeacherSvg  from '../assets/undraw_teacher_re_sico.svg';
+
 import SquerBlock from "../Components/SquerBlock";
 import PrimaryButton from "../Components/PrimaryButton";
 import { useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
+import SecondaryText from "../Components/SecondaryText";
 
 function SetGamePage({ navigation }) {
 
     const [operatorArray, setOperatorArray] = useState(Array(4).fill(false));
     const [buttonStyles, setButtonStyles] = useState(Array(4).fill(styles.squerButton));
-    const [questionCount, setQuestionCount] = useState(0);
 
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState('Select question count.');
@@ -41,7 +41,8 @@ function SetGamePage({ navigation }) {
         }
         else {
             navigation.navigate('SinglePlayerPage', {
-                operatorArray: JSON.stringify(operatorArray)
+                operatorArray: JSON.stringify(operatorArray),
+                questionCount: value
             });
         }
     }
@@ -59,30 +60,27 @@ function SetGamePage({ navigation }) {
                 <TeacherSvg style={styles.teacherSvg} width={120} height={120} />
             </View>
             <View style={styles.lowerViewContainer} >
-                <MathFightText type="header">
-                    Pick your operators?
-                </MathFightText>
+                <SecondaryText type='header'>Select your operators?</SecondaryText>
                 <View style={styles.buttonContainer}>
-                    <View style={styles.innnerButtonWrapper}>
+                    <View style={styles.innerButtonWrapper}>
                         <SquerBlock style={buttonStyles[0]} onPress={() => opatorBlock(0)} title='+' />
                         <SquerBlock style={buttonStyles[1]} onPress={() => opatorBlock(1)} title='-' />
                     </View>
-                    <View style={styles.innnerButtonWrapper}>
-
+                    <View style={styles.innerButtonWrapper}>
                         <SquerBlock style={buttonStyles[2]} onPress={() => opatorBlock(2)} title='x' />
                         <SquerBlock style={buttonStyles[3]} onPress={() => opatorBlock(3)} title='/' />
                     </View>
-                </View>
-                <View style={styles.buttonContainer}>
-                    <DropDownPicker
-                        open={open}
-                        value={value}
-                        items={items}
-                        setOpen={setOpen}
-                        setValue={setValue}
-                        setItems={setItems}
-                        placeholder='Select question count'
-                    />
+                    <View style={styles.innerDropdownWrapper}>
+                        <DropDownPicker
+                            open={open}
+                            value={value}
+                            items={items}
+                            setOpen={setOpen}
+                            setValue={setValue}
+                            setItems={setItems}
+                            placeholder='Select question count'
+                        />
+                    </View>
                 </View>
             </View>
             <View style={styles.startBtnContainer}>
@@ -116,12 +114,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%'
     },
-    innnerButtonWrapper: {
+    innerButtonWrapper: {
         flex: 3,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         width: '100%'
+    },
+    innerDropdownWrapper: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '80%'
     },
     squerButton: {
         backgroundColor: '#42417F',
