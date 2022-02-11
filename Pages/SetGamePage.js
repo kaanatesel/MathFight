@@ -7,11 +7,23 @@ import TeacherSvg from '../assets/undraw_teacher_re_sico.svg';
 import SquerBlock from "../Components/SquerBlock";
 import PrimaryButton from "../Components/PrimaryButton";
 import { useState } from "react";
+import DropDownPicker from "react-native-dropdown-picker";
 
 function SetGamePage({ navigation }) {
 
     const [operatorArray, setOperatorArray] = useState(Array(4).fill(false));
     const [buttonStyles, setButtonStyles] = useState(Array(4).fill(styles.squerButton));
+    const [questionCount, setQuestionCount] = useState(0);
+
+    const [open, setOpen] = useState(false);
+    const [value, setValue] = useState('Select question count.');
+    const [items, setItems] = useState([
+        { label: '3', value: '3' },
+        { label: '5', value: '5' },
+        { label: '10', value: '10' },
+        { label: '15', value: '15' },
+        { label: '20', value: '20' },
+    ]);
 
     const opatorBlock = (id) => {
         let newOpArr = operatorArray;
@@ -24,7 +36,14 @@ function SetGamePage({ navigation }) {
     }
 
     function submitOperatorArray(props) {
-        alert(operatorArray);
+        if (!operatorArray[0] && !operatorArray[1] && !operatorArray[2] && !operatorArray[3]) {
+            alert("No operator is selected.");
+        }
+        else {
+            navigation.navigate('SinglePlayerPage', {
+                operatorArray: JSON.stringify(operatorArray)
+            });
+        }
     }
 
     return (
@@ -37,7 +56,7 @@ function SetGamePage({ navigation }) {
                         <Image source={backButtonIcon} alt='' />
                     </TouchableHighlight>
                 </View>
-                <TeacherSvg style={styles.teacherSvg} width={200} height={200} />
+                <TeacherSvg style={styles.teacherSvg} width={120} height={120} />
             </View>
             <View style={styles.lowerViewContainer} >
                 <MathFightText type="header">
@@ -54,6 +73,17 @@ function SetGamePage({ navigation }) {
                         <SquerBlock style={buttonStyles[3]} onPress={() => opatorBlock(3)} title='/' />
                     </View>
                 </View>
+                <View style={styles.buttonContainer}>
+                    <DropDownPicker
+                        open={open}
+                        value={value}
+                        items={items}
+                        setOpen={setOpen}
+                        setValue={setValue}
+                        setItems={setItems}
+                        placeholder='Select question count'
+                    />
+                </View>
             </View>
             <View style={styles.startBtnContainer}>
                 <PrimaryButton onPress={submitOperatorArray} title='Submit' />
@@ -69,7 +99,7 @@ const styles = StyleSheet.create({
         padding: 15
     },
     lowerViewContainer: {
-        flex: 2,
+        flex: 3,
         alignItems: 'center',
         paddingBottom: 20
     },
