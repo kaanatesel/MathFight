@@ -6,10 +6,81 @@ import SquerBlock from "../Components/SquerBlock";
 import MathFightText from "../Components/MathFightText";
 import SecondaryText from "../Components/SecondaryText";
 import CountDown from "react-native-countdown-component";
+import { useState } from "react";
+
+
 
 
 function SinglePlayerPage({ route, navigation }) {
-    //const { operatorArray } = route.params;
+    //const { operatorArray, questionCount } = route.params;
+
+    const [activeQuestion, setActiveQuestion] = useState(null);
+
+    function createSumQuestion() {
+        const min = 1;
+        const max = 20;
+        //Create 2 random numbers for sum operation
+        const operand1 = Math.floor(min + Math.random() * (max - min));
+        const oparand2 = Math.floor(min + Math.random() * (max - min));
+
+        let numberArray = Array.from(Array(40).keys()); // creata an answer array 
+        let ansIndexArray = [0, 1, 2, 3]; // create and answer index array
+
+        /**
+         * Correct answer will be removed from numberArray so the other answer can pick anny number from this list.
+         * same for  ansIndexArray
+         */
+
+        const correctAns = operand1 + oparand2; // this is also a index for numberArray
+
+        numberArray.splice(correctAns - 1, 1);
+
+        let minAnsIndex = correctAns - 6;
+        let maxAnsIndex = correctAns + 6;
+
+        let ans1 = Math.floor(minAnsIndex + Math.random() * (maxAnsIndex - minAnsIndex));
+        ans1 = (ans1 < 0) ? 0 : ans1; //check boundaries
+        ans1 = (ans1 >= numberArray.length) ? (numberArray.length - 1) : ans1;
+        const ans1Val = numberArray[ans1];
+        numberArray.splice(ans1 - 1, 1);
+
+        let ans2 = Math.floor(minAnsIndex + Math.random() * (maxAnsIndex - minAnsIndex));
+        ans2 = (ans2 < 0) ? 0 : ans2; //check boundaries
+        ans2 = (ans2 >= numberArray.length) ? (numberArray.length - 1) : ans2;
+        const ans2Val = numberArray[ans2];
+        numberArray.splice(ans2 - 1, 1);
+
+        let ans3 = Math.floor(minAnsIndex + Math.random() * (maxAnsIndex - minAnsIndex));
+        ans3 = (ans3 < 0) ? 0 : ans3; //check boundaries
+        ans3 = (ans3 >= numberArray.length) ? (numberArray.length - 1) : ans3;
+        const ans3Val = numberArray[ans3];
+
+
+        const correctAnsIndex = Math.floor(0 + Math.random() * (ansIndexArray.length - 0));
+        ansIndexArray.splice(correctAnsIndex, 1);
+
+        const ans1ChoiceIndex = Math.floor(0 + Math.random() * (ansIndexArray.length - 0));
+        const ans1ChoiseVal = ansIndexArray[ans1ChoiceIndex];
+        ansIndexArray.splice(ans1ChoiceIndex, 1);
+
+        const ans2ChoiceIndex = Math.floor(0 + Math.random() * (ansIndexArray.length - 0));
+        const ans2ChoiseVal = ansIndexArray[ans2ChoiceIndex];
+        ansIndexArray.splice(ans2ChoiceIndex, 1);
+
+        const ans3ChoiseVal = ansIndexArray[0];
+
+        const answers = Array(4);
+        answers[correctAnsIndex] = `_C${correctAns}_`;
+        answers[ans1ChoiseVal] = `w${ans1Val}`;
+        answers[ans2ChoiseVal] = `w${ans2Val}`;
+        answers[ans3ChoiseVal] = `w${ans3Val}`;
+
+        console.log(
+            `${operand1} + ${oparand2} = [ ${answers} ]`
+        );
+    }
+
+
     return (
         <View style={GlobalStyles.container}>
             <View style={styles.upperViewContainer}>
@@ -21,8 +92,7 @@ function SinglePlayerPage({ route, navigation }) {
                     </TouchableHighlight>
                     <CountDown
                         until={10}
-                        onFinish={() => alert('finished')}
-                        onPress={() => alert('hello')}
+
                         size={30}
                         timeToShow={['M', 'S']}
                         digitStyle={{ backgroundColor: '#FFF', borderWidth: 2, borderColor: '#F0D654' }}
@@ -39,12 +109,12 @@ function SinglePlayerPage({ route, navigation }) {
                 </View>
                 <View style={styles.buttonContainer}>
                     <View style={styles.innnerButtonWrapper}>
-                        <SquerBlock onPress={() => alert('blk')} title='4' />
-                        <SquerBlock onPress={() => alert('blk')} title='5' />
+                        <SquerBlock onPress={() => createSumQuestion()} title='4' />
+                        <SquerBlock onPress={() => createSumQuestion()} title='5' />
                     </View>
                     <View style={styles.innnerButtonWrapper}>
-                        <SquerBlock onPress={() => alert('blk')} title='14' />
-                        <SquerBlock onPress={() => alert('blk')} title='4' />
+                        <SquerBlock onPress={() => createSumQuestion()} title='14' />
+                        <SquerBlock onPress={() => createSumQuestion()} title='4' />
                     </View>
                 </View>
             </View>

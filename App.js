@@ -1,5 +1,4 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -20,7 +19,7 @@ export default function App() {
         screenOptions={{
           headerShown: false
         }}
-        initialRouteName='Welcomepage'>
+        initialRouteName='SinglePlayerPage'>
         <Stack.Screen
           name='Welcomepage' component={WelcomePage} />
         <Stack.Screen name='SetGamePage' component={SetGamePage} />
