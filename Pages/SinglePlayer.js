@@ -16,39 +16,61 @@ function SinglePlayerPage({ route, navigation }) {
 
     const [activeQuestion, setActiveQuestion] = useState(null);
 
+    function createMultiplicaiton() {
+        const min = 1;
+        const max = 10;
+        //Create 2 random numbers for sum operation
+        const operand1 = Math.floor(min + Math.random() * (max - min));
+        const operand2 = Math.floor(min + Math.random() * (max - min));
+
+        const correctAns = operand1 * operand2; // this is also a index for numberArray
+
+        generateChoices(correctAns, operand1, operand2, 10, 10, 'x');
+    }
+
+    function createExtractionQuestion() {
+        const min = 1;
+        const max = 20;
+        //Create 2 random numbers for sum operation
+        const smallerOperand = Math.floor(min + Math.random() * (max - min));
+        const biggerOperand = Math.floor(smallerOperand + Math.random() * (max - smallerOperand));
+
+        const correctAns = biggerOperand - smallerOperand; // this is also a index for numberArray
+
+        generateChoices(correctAns, biggerOperand, smallerOperand, 6, 6, '-');
+    }
+
     function createSumQuestion() {
         const min = 1;
         const max = 20;
         //Create 2 random numbers for sum operation
         const operand1 = Math.floor(min + Math.random() * (max - min));
-        const oparand2 = Math.floor(min + Math.random() * (max - min));
+        const operand2 = Math.floor(min + Math.random() * (max - min));
+        const correctAns = operand1 + operand2; // this is also a index for numberArray
 
+        generateChoices(correctAns, operand1, operand2, 6, 6, '+');
+    }
+
+    function generateChoices(answer, operand1, operand2, choicesLowerBound, choicesUpperBound, operator) {
         let numberArray = Array.from(Array(40).keys()); // creata an answer array 
         let ansIndexArray = [0, 1, 2, 3]; // create and answer index array
 
-        /**
-         * Correct answer will be removed from numberArray so the other answer can pick anny number from this list.
-         * same for  ansIndexArray
-         */
+        numberArray.splice(answer, 1);
 
-        const correctAns = operand1 + oparand2; // this is also a index for numberArray
-
-        numberArray.splice(correctAns - 1, 1);
-
-        let minAnsIndex = correctAns - 6;
-        let maxAnsIndex = correctAns + 6;
+        let minAnsIndex = answer - choicesLowerBound;
+        let maxAnsIndex = answer + choicesUpperBound;
 
         let ans1 = Math.floor(minAnsIndex + Math.random() * (maxAnsIndex - minAnsIndex));
         ans1 = (ans1 < 0) ? 0 : ans1; //check boundaries
         ans1 = (ans1 >= numberArray.length) ? (numberArray.length - 1) : ans1;
         const ans1Val = numberArray[ans1];
-        numberArray.splice(ans1 - 1, 1);
+        numberArray.splice((ans1 === 0) ? ans1 : ans1, 1);
 
         let ans2 = Math.floor(minAnsIndex + Math.random() * (maxAnsIndex - minAnsIndex));
         ans2 = (ans2 < 0) ? 0 : ans2; //check boundaries
         ans2 = (ans2 >= numberArray.length) ? (numberArray.length - 1) : ans2;
         const ans2Val = numberArray[ans2];
-        numberArray.splice(ans2 - 1, 1);
+        numberArray.splice((ans2 === 0) ? ans2 : ans2, 1);
 
         let ans3 = Math.floor(minAnsIndex + Math.random() * (maxAnsIndex - minAnsIndex));
         ans3 = (ans3 < 0) ? 0 : ans3; //check boundaries
@@ -70,13 +92,13 @@ function SinglePlayerPage({ route, navigation }) {
         const ans3ChoiseVal = ansIndexArray[0];
 
         const answers = Array(4);
-        answers[correctAnsIndex] = `_C${correctAns}_`;
+        answers[correctAnsIndex] = `_C${answer}_`;
         answers[ans1ChoiseVal] = `w${ans1Val}`;
         answers[ans2ChoiseVal] = `w${ans2Val}`;
         answers[ans3ChoiseVal] = `w${ans3Val}`;
 
         console.log(
-            `${operand1} + ${oparand2} = [ ${answers} ]`
+            `${operand1} ${operator} ${operand2} = [ ${answers} ]`
         );
     }
 
@@ -109,11 +131,11 @@ function SinglePlayerPage({ route, navigation }) {
                 </View>
                 <View style={styles.buttonContainer}>
                     <View style={styles.innnerButtonWrapper}>
-                        <SquerBlock onPress={() => createSumQuestion()} title='4' />
-                        <SquerBlock onPress={() => createSumQuestion()} title='5' />
+                        <SquerBlock onPress={() => createSumQuestion()} title='sum' />
+                        <SquerBlock onPress={() => createExtractionQuestion()} title='extractiom' />
                     </View>
                     <View style={styles.innnerButtonWrapper}>
-                        <SquerBlock onPress={() => createSumQuestion()} title='14' />
+                        <SquerBlock onPress={() => createMultiplicaiton()} title='Mutip' />
                         <SquerBlock onPress={() => createSumQuestion()} title='4' />
                     </View>
                 </View>
