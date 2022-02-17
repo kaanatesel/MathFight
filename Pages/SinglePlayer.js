@@ -16,7 +16,31 @@ function SinglePlayerPage({ route, navigation }) {
 
     const [activeQuestion, setActiveQuestion] = useState(null);
 
-    function createMultiplicaiton() {
+    function createDivisionQuestion(params) {
+        const min = 1;
+        const max = 30;
+        const dividen = Math.floor(min + Math.random() * (max - min));
+
+        var divisorsList = [];
+        var divisors = (n) => [...Array(n + 1).keys()].slice(1)
+            .reduce((s, a) => {
+                var divisor = !(n % a) && a;
+                if (divisor) divisorsList.push(divisor);
+                return s + divisor;
+            }, 0);
+
+
+        divisors(dividen);
+
+        const deviderIndex = Math.floor(1 + Math.random() * ((divisorsList.length - 1) - 1));
+        const divider = divisorsList[deviderIndex];
+
+        const answer = dividen / divider;
+
+        generateChoices(answer, dividen, divider, 5, 5, '/');
+    }
+
+    function createMultiplicaitonQuestion() {
         const min = 1;
         const max = 10;
         //Create 2 random numbers for sum operation
@@ -52,7 +76,7 @@ function SinglePlayerPage({ route, navigation }) {
     }
 
     function generateChoices(answer, operand1, operand2, choicesLowerBound, choicesUpperBound, operator) {
-        let numberArray = Array.from(Array(40).keys()); // creata an answer array 
+        let numberArray = Array.from(Array(100).keys()); // creata an answer array 
         let ansIndexArray = [0, 1, 2, 3]; // create and answer index array
 
         numberArray.splice(answer, 1);
@@ -135,8 +159,8 @@ function SinglePlayerPage({ route, navigation }) {
                         <SquerBlock onPress={() => createExtractionQuestion()} title='extractiom' />
                     </View>
                     <View style={styles.innnerButtonWrapper}>
-                        <SquerBlock onPress={() => createMultiplicaiton()} title='Mutip' />
-                        <SquerBlock onPress={() => createSumQuestion()} title='4' />
+                        <SquerBlock onPress={() => createMultiplicaitonQuestion()} title='Mutip' />
+                        <SquerBlock onPress={() => createDivisionQuestion()} title='Division' />
                     </View>
                 </View>
             </View>
