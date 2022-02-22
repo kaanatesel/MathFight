@@ -14,9 +14,15 @@ import { useState } from "react";
 function SinglePlayerPage({ route, navigation }) {
     //const { operatorArray, questionCount } = route.params;
 
-    const [activeQuestion, setActiveQuestion] = useState(null);
+    const [choiceOne, setChoiceOne] = useState(0);
+    const [choiceTwo, setChoiceTwo] = useState(0);
+    const [choiceTree, setChoiceTree] = useState(0);
+    const [choiceFour, setChoiceFour] = useState(0);
+    const [correctAnswer, setCorrectAnswer] = useState(0);
 
-    function createDivisionQuestion(params) {
+    const [question, setQuestion] = useState('x + x = ?');
+
+    function createDivisionQuestion() {
         const min = 1;
         const max = 30;
         const dividen = Math.floor(min + Math.random() * (max - min));
@@ -116,16 +122,31 @@ function SinglePlayerPage({ route, navigation }) {
         const ans3ChoiseVal = ansIndexArray[0];
 
         const answers = Array(4);
-        answers[correctAnsIndex] = `_C${answer}_`;
-        answers[ans1ChoiseVal] = `w${ans1Val}`;
-        answers[ans2ChoiseVal] = `w${ans2Val}`;
-        answers[ans3ChoiseVal] = `w${ans3Val}`;
+        answers[correctAnsIndex] = answer;
+        answers[ans1ChoiseVal] = ans1Val;
+        answers[ans2ChoiseVal] = ans2Val;
+        answers[ans3ChoiseVal] = ans3Val;
 
-        console.log(
-            `${operand1} ${operator} ${operand2} = [ ${answers} ]`
-        );
+        setChoiceOne(answers[0]);
+        setChoiceTwo(answers[1]);
+        setChoiceTree(answers[2]);
+        setChoiceFour(answers[3]);
+
+        setCorrectAnswer(answer);
+
+        setQuestion(`${operand1} ${operator} ${operand2} = ?`);
     }
 
+
+    function checkAnswer(value) {
+        if (value === correctAnswer) {
+            console.log("correct");
+        }
+        else {
+            console.log("false");
+        }
+
+    }
 
     return (
         <View style={GlobalStyles.container}>
@@ -138,7 +159,6 @@ function SinglePlayerPage({ route, navigation }) {
                     </TouchableHighlight>
                     <CountDown
                         until={10}
-
                         size={30}
                         timeToShow={['M', 'S']}
                         digitStyle={{ backgroundColor: '#FFF', borderWidth: 2, borderColor: '#F0D654' }}
@@ -151,16 +171,16 @@ function SinglePlayerPage({ route, navigation }) {
             </View>
             <View style={styles.lowerViewContainer} >
                 <View style={styles.questionText}>
-                    <SecondaryText type='header'>4 + 5</SecondaryText>
+                    <SecondaryText type='header'>{question}</SecondaryText>
                 </View>
                 <View style={styles.buttonContainer}>
                     <View style={styles.innnerButtonWrapper}>
-                        <SquerBlock onPress={() => createSumQuestion()} title='sum' />
-                        <SquerBlock onPress={() => createExtractionQuestion()} title='extractiom' />
+                        <SquerBlock onPress={() => checkAnswer(choiceOne)} title={choiceOne} />
+                        <SquerBlock onPress={() => checkAnswer(choiceTwo)} title={choiceTwo} />
                     </View>
                     <View style={styles.innnerButtonWrapper}>
-                        <SquerBlock onPress={() => createMultiplicaitonQuestion()} title='Mutip' />
-                        <SquerBlock onPress={() => createDivisionQuestion()} title='Division' />
+                        <SquerBlock onPress={() => checkAnswer(choiceTree)} title={choiceTree} />
+                        <SquerBlock onPress={() => checkAnswer(choiceFour)} title={choiceFour} />
                     </View>
                 </View>
             </View>
