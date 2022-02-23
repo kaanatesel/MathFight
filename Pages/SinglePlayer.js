@@ -6,13 +6,13 @@ import SquerBlock from "../Components/SquerBlock";
 import MathFightText from "../Components/MathFightText";
 import SecondaryText from "../Components/SecondaryText";
 import CountDown from "react-native-countdown-component";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 
 
 
 function SinglePlayerPage({ route, navigation }) {
-    //const { operatorArray, questionCount } = route.params;
+    const { operatorString, questionCount } = route.params;
 
     const [choiceOne, setChoiceOne] = useState(0);
     const [choiceTwo, setChoiceTwo] = useState(0);
@@ -20,11 +20,37 @@ function SinglePlayerPage({ route, navigation }) {
     const [choiceFour, setChoiceFour] = useState(0);
     const [correctAnswer, setCorrectAnswer] = useState(0);
 
+    const [askedQuestions, setAskedQuesitons] = useState(0);
+
     const [question, setQuestion] = useState('x + x = ?');
+
+    useEffect(() => {
+        randomQuestion();
+    }, [])
+
+    function randomQuestion() {
+        const randomIndex = Math.floor(0 + Math.random() * ((operatorString.length) - 0));
+
+        if (operatorString[randomIndex] === '+') {
+            createSumQuestion();
+        }
+
+        if (operatorString[randomIndex] === '-') {
+            createExtractionQuestion();
+        }
+
+        if (operatorString[randomIndex] === 'x') {
+            createMultiplicaitonQuestion();
+        }
+
+        if (operatorString[randomIndex] === '/') {
+            createDivisionQuestion();
+        }
+    }
 
     function createDivisionQuestion() {
         const min = 1;
-        const max = 30;
+        const max = 40;
         const dividen = Math.floor(min + Math.random() * (max - min));
 
         var divisorsList = [];
@@ -140,12 +166,17 @@ function SinglePlayerPage({ route, navigation }) {
 
     function checkAnswer(value) {
         if (value === correctAnswer) {
-            console.log("correct");
         }
         else {
-            console.log("false");
         }
 
+        if (askedQuestions === parseInt(questionCount)) {
+            navigation.navigate('EndGamePage');
+        }
+        else {
+            setAskedQuesitons(askedQuestions + 1);
+            randomQuestion();
+        }
     }
 
     return (

@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import WelcomePage from './Pages/WelcomePage';
 import SetGamePage from './Pages/SetGamePage';
 import SinglePlayerPage from './Pages/SinglePlayer';
+import EndGamePage from './Pages/EndGamePage';
 
 
 const Stack = createNativeStackNavigator();
@@ -19,11 +20,12 @@ export default function App() {
         screenOptions={{
           headerShown: false
         }}
-        initialRouteName='SinglePlayerPage'>
+        initialRouteName='SetGamePage'>
         <Stack.Screen
           name='Welcomepage' component={WelcomePage} />
         <Stack.Screen name='SetGamePage' component={SetGamePage} />
         <Stack.Screen name='SinglePlayerPage' component={SinglePlayerPage} />
+        <Stack.Screen name='EndGamePage' component={EndGamePage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

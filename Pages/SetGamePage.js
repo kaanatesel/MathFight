@@ -40,8 +40,22 @@ function SetGamePage({ navigation }) {
             alert("No operator is selected.");
         }
         else {
+            let operatorString = "";
+
+            if(operatorArray[0])
+                operatorString = operatorString + '+';
+            
+            if(operatorArray[1])
+                operatorString = operatorString + '-';
+
+            if(operatorArray[2])
+                operatorString = operatorString + 'x';
+
+            if(operatorArray[3])
+                operatorString = operatorString + '/';
+
             navigation.navigate('SinglePlayerPage', {
-                operatorArray: JSON.stringify(operatorArray),
+                operatorString: operatorString,
                 questionCount: value
             });
         }
