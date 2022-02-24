@@ -8,9 +8,6 @@ import SecondaryText from "../Components/SecondaryText";
 import CountDown from "react-native-countdown-component";
 import { useEffect, useState } from "react";
 
-
-
-
 function SinglePlayerPage({ route, navigation }) {
     const { operatorString, questionCount } = route.params;
 
@@ -20,9 +17,13 @@ function SinglePlayerPage({ route, navigation }) {
     const [choiceFour, setChoiceFour] = useState(0);
     const [correctAnswer, setCorrectAnswer] = useState(0);
 
-    const [askedQuestions, setAskedQuesitons] = useState(0);
+    const [askedQuestions, setAskedQuesitons] = useState(1);
+
+    const [answerArray, setAnswerArray] = useState([]);
 
     const [question, setQuestion] = useState('x + x = ?');
+
+    const [correctAnsCount, setCorrectAnsCount] = useState(0);
 
     useEffect(() => {
         randomQuestion();
@@ -165,13 +166,22 @@ function SinglePlayerPage({ route, navigation }) {
 
 
     function checkAnswer(value) {
+        let arr = answerArray;
         if (value === correctAnswer) {
+            arr.push(true);
+            setCorrectAnsCount(correctAnsCount + 1);
         }
         else {
+            arr.push(false)
         }
 
+        setAnswerArray([...arr]);
+
         if (askedQuestions === parseInt(questionCount)) {
-            navigation.navigate('EndGamePage');
+            navigation.navigate('EndGamePage', {
+                answerArray: JSON.stringify(answerArray),
+                trueCount: correctAnsCount
+            });
         }
         else {
             setAskedQuesitons(askedQuestions + 1);
